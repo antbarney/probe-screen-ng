@@ -17,7 +17,6 @@
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import sys
 
 import hal
 import hal_glib
@@ -319,8 +318,8 @@ class ProbeScreenToolMeasurement(ProbeScreenBase):
         change = self.halcomp["toolchange-change"]
         toolnumber = self.halcomp["toolchange-number"]
         toolprepnumber = self.halcomp["toolchange-prep-number"]
-        print("tool-number =", toolnumber)
-        print("tool_prep_number =", toolprepnumber, change)
+        print(("tool-number =", toolnumber))
+        print(("tool_prep_number =", toolprepnumber, change))
         if change:
             # if toolprepnumber = 0 we will get an error because we will not be able to get
             # any tooldescription, so we avoid that case
@@ -345,11 +344,11 @@ class ProbeScreenToolMeasurement(ProbeScreenBase):
                 self.vcp_reload()
                 self.halcomp["toolchange-changed"] = True
             else:
-                print(
+                print((
                     "toolchange abort",
                     toolnumber,
                     self.halcomp["toolchange-prep-number"],
-                )
+                ))
                 self.command.abort()
                 self.halcomp["toolchange-prep-number"] = toolnumber
                 self.halcomp["toolchange-change"] = False
