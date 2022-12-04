@@ -123,9 +123,7 @@ class ProbeScreenBase(object):
         if "axis" in self.display:
             # AXIS polls for errors every 0.2 seconds, so we wait slightly longer to make sure it's happened.
             time.sleep(0.25)
-            error_pin = Popen(
-                "halcmd getp probe.user.error ", shell=True, stdout=PIPE
-            ).stdout.read()
+            error_pin = Popen("halcmd getp probe.user.error ", shell=True, stdout=PIPE).stdout.read()
 
         elif "gmoccapy" in self.display:
             # gmoccapy polls for errors every 0.25 seconds, OR whatever value is in the [DISPLAY]CYCLE_TIME ini
@@ -141,7 +139,7 @@ class ProbeScreenBase(object):
             print(("Unable to poll %s GUI for errors" % self.display))
             return -1
 
-        if "TRUE" in error_pin:
+        if b'TRUE' in error_pin:
             text = "See notification popup"
             self.add_history("Error: %s" % text)
             print(("error", text))
@@ -258,12 +256,12 @@ class ProbeScreenBase(object):
         self.buffer.insert(i, "%s \n" % text)
 
     def _dialog(
-        self, gtk_type, gtk_buttons, message, secondary=None, title=_("Probe Screen NG")
+        self, gtk_type, gtk_buttons, message, secondary=None, title=("Probe Screen NG")
     ):
         """ displays a dialog """
         dialog = Gtk.MessageDialog(
             self.window,
-            Gtk.DIALOG_DESTROY_WITH_PARENT,
+            Gtk.DialogFlags.DESTROY_WITH_PARENT,
             gtk_type,
             gtk_buttons,
             message,
@@ -274,19 +272,21 @@ class ProbeScreenBase(object):
         dialog.set_keep_above(True)
         dialog.show_all()
         dialog.set_title(title)
-        responce = dialog.run()
+        response = dialog.run()
         dialog.destroy()
-        return responce == Gtk.RESPONSE_OK
+        return response == Gtk.ResponseType.OK
 
     def warning_dialog(self, message, secondary=None, title=_("Probe Screen NG")):
         """ displays a warning dialog """
         return self._dialog(
-            Gtk.MESSAGE_WARNING, Gtk.BUTTONS_OK, message, secondary, title
+            Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, message, secondary, title
         )
 
     def error_dialog(self, message, secondary=None, title=_("Probe Screen NG")):
         """ displays a warning dialog and exits the probe screen"""
-        self._dialog(Gtk.MESSAGE_ERROR, Gtk.BUTTONS_CLOSE, message, secondary, title)
+        self._dialog(
+            Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, message, secondary, title
+        )
         sys.exit(1)
 
     def display_result_a(self, value):

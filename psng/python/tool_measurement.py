@@ -324,7 +324,7 @@ class ProbeScreenToolMeasurement(ProbeScreenBase):
             # if toolprepnumber = 0 we will get an error because we will not be able to get
             # any tooldescription, so we avoid that case
             if toolprepnumber == 0:
-                message = _("Please remove the mounted tool and press OK when done")
+                message = ("Please remove the mounted tool and press OK when done")
             else:
                 tooltable = self.inifile.find("EMCIO", "TOOL_TABLE")
                 if not tooltable:
@@ -336,7 +336,7 @@ class ProbeScreenToolMeasurement(ProbeScreenBase):
                 toolfile = os.path.join(CONFIGPATH, tooltable)
                 self.tooledit1.set_filename(toolfile)
                 tooldescr = self.tooledit1.get_toolinfo(toolprepnumber)[16]
-                message = _(
+                message = (
                     "Please change to tool\n\n# {0:d}     {1}\n\n then click OK."
                 ).format(toolprepnumber, tooldescr)
             result = self.warning_dialog(message, title=_("Manual Toolchange"))

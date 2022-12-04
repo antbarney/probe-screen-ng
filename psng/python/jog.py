@@ -71,7 +71,7 @@ class ProbeScreenJog(ProbeScreenBase):
         # One from the released button and one from the pressed button
         # we make a list of the buttons to later add the hardware pins to them
         label = "Cont"
-        rbt0 = Gtk.RadioButton(None, label)
+        rbt0 = Gtk.RadioButton(group=None, label=label)
         rbt0.connect("pressed", self.on_increment_changed, 0)
         self.steps.pack_start(rbt0, True, True, 0)
         rbt0.set_property("draw_indicator", False)
@@ -83,7 +83,7 @@ class ProbeScreenJog(ProbeScreenBase):
         # self.no_increments is set while setting the hal pins with self._check_len_increments
         for item in range(1, len(self.jog_increments)):
             rbt = "rbt%d" % (item)
-            rbt = Gtk.RadioButton(rbt0, self.jog_increments[item])
+            rbt = Gtk.RadioButton(group=rbt0, label=self.jog_increments[item])
             rbt.connect("pressed", self.on_increment_changed, self.jog_increments[item])
             self.steps.pack_start(rbt, True, True, 0)
             rbt.set_property("draw_indicator", False)
